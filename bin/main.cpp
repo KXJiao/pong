@@ -1,6 +1,7 @@
 // Using SDL and standard IO
 #include <SDL.h>
 #include <SDL2_gfxPrimitives.h>
+#include <SDL_image.h>
 #include <iostream>
 #include <stdio.h>
 
@@ -19,8 +20,17 @@ void csci437_error(const std::string &msg)
     exit(0);
 }
 
+void csci437_img_error(const std::string &msg)
+{
+    std::cerr << msg << " (" << IMG_GetError() << ")" << std::endl;
+    exit(0);
+}
+
 void initSDL(void)
 {
+    /**
+     * Initializes SDL window and renderers
+     **/
 
     // Initialize SDL
     if (SDL_Init(SDL_INIT_VIDEO) < 0)
@@ -30,6 +40,10 @@ void initSDL(void)
     window = SDL_CreateWindow("Pong", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN);
     if (window == NULL)
         csci437_error("Window could not be created!");
+
+    // Init Bitmap loading
+    if (IMG_Init(IMG_INIT_JPG | IMG_INIT_PNG) < 0)
+        csci437_img_error("SDL could not initialize bitmap loaders!");
 
     // Small delay to allow the system to create the window.
     SDL_Delay(100);
@@ -42,6 +56,10 @@ void initSDL(void)
 
 void doInput(void)
 {
+    /**
+     * Handle user input
+     **/
+
     SDL_Event e;
     // Handle events on queue
     while (SDL_PollEvent(&e) != 0)
@@ -61,19 +79,56 @@ void doInput(void)
     }
 }
 
+SDL_Texture *loadTexture(char *filename)
+{
+    /**
+     * Loads image from file as texture
+     **/
+
+    SDL_Texture *texture;
+    texture = IMG_LoadTexture(renderer, filename);
+
+    return texture;
+}
+
+void drawTexture(SDL_Texture *texture, int x, int y)
+{
+    /**
+     * Draws a texture at the given coordinates
+     **/
+
+    SDL_Rect dest;
+
+    dest.x = x;
+    dest.y = y;
+    SDL_QueryTexture(texture, NULL, NULL, &dest.w, &dest.h);
+
+    SDL_RenderCopy(renderer, texture, NULL, &dest);
+}
+
 void prepareScene(void)
 {
-    SDL_SetRenderDrawColor(renderer, 96, 128, 255, 255);
+    /***
+     * Sets up renderer
+     **/
+    SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
     SDL_RenderClear(renderer);
 }
 
 void presentScene(void)
 {
+    /***
+     * Displays items on screen
+     **/
     SDL_RenderPresent(renderer);
 }
 
 void cleanup(void)
 {
+    /**
+     * Cleans up objects and quits
+     **/
+
     // Destroy renderer
     SDL_DestroyRenderer(renderer);
 
@@ -92,11 +147,18 @@ int main(int argc, char **argv)
     /*** Main Loop ***/
     running = true;
 
+    int testx = 150;
+    int testy = 150;
+    char testFile[] = "../resource/yes.PNG";
+    SDL_Texture *testTexture;
+    testTexture = loadTexture(testFile);
+
     // While application is running
     while (running)
     {
         prepareScene();
         doInput();
+        drawTexture(testTexture, testx, testy);
         presentScene();
     }
 
