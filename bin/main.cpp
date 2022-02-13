@@ -1,9 +1,10 @@
 // Using SDL and standard IO
 #include <SDL.h>
-#include <SDL2_gfxPrimitives.h>
 #include <SDL_image.h>
 #include <iostream>
 #include <stdio.h>
+#include <string>
+#include "paddle.h"
 
 // Default screen dimension constants
 const int SCREEN_WIDTH = 1024;
@@ -12,6 +13,9 @@ const int SCREEN_HEIGHT = 768;
 // Vars for game
 SDL_Window *window;
 SDL_Renderer *renderer;
+
+Paddle paddle(100, 100, 100, 100);
+
 bool running;
 
 void csci437_error(const std::string &msg)
@@ -72,6 +76,15 @@ void doInput(void)
         case SDL_KEYDOWN: // User presses a key
             if (e.key.keysym.sym == SDLK_q)
                 running = false;
+            else if (e.key.keysym.sym == SDLK_w)
+            {
+                paddle.up();
+            }
+            else if (e.key.keysym.sym == SDLK_s)
+            {
+                paddle.down();
+            }
+
             break;
         default:
             break;
@@ -79,14 +92,14 @@ void doInput(void)
     }
 }
 
-SDL_Texture *loadTexture(char *filename)
+SDL_Texture *loadTexture(std::string filename)
 {
     /**
      * Loads image from file as texture
      **/
 
     SDL_Texture *texture;
-    texture = IMG_LoadTexture(renderer, filename);
+    texture = IMG_LoadTexture(renderer, filename.c_str());
 
     return texture;
 }
@@ -131,9 +144,11 @@ void cleanup(void)
 
     // Destroy renderer
     SDL_DestroyRenderer(renderer);
+    renderer = NULL;
 
     // Destroy window
     SDL_DestroyWindow(window);
+    window = NULL;
 
     // Quit SDL subsystems
     SDL_Quit();
@@ -149,7 +164,7 @@ int main(int argc, char **argv)
 
     int testx = 150;
     int testy = 150;
-    char testFile[] = "../resource/yes.PNG";
+    std::string testFile = "../resource/yes.PNG";
     SDL_Texture *testTexture;
     testTexture = loadTexture(testFile);
 
@@ -158,6 +173,7 @@ int main(int argc, char **argv)
     {
         prepareScene();
         doInput();
+        paddle.render(renderer);
         drawTexture(testTexture, testx, testy);
         presentScene();
     }
