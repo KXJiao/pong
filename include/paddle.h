@@ -5,7 +5,6 @@ class Paddle
 {
 public:
     Paddle(int, int, int, int);
-    // void handleEvent(SDL_Event &e);
     void up();
     void down();
     void render(SDL_Renderer *renderer);
