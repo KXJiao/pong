@@ -18,6 +18,8 @@ private:
     int xvel;
     int yvel;
 
+    int maxvel;
+
     void paddleBounce();
 };
 

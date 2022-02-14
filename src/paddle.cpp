@@ -11,12 +11,20 @@ Paddle::Paddle(int h, int w, int x, int y)
 
 void Paddle::up()
 {
-    ypos -= 10;
+    ypos -= 30;
+    if (ypos < 0)
+    {
+        ypos = 0;
+    }
 }
 
 void Paddle::down()
 {
-    ypos += 10;
+    ypos += 30;
+    if (ypos + height > 768)
+    {
+        ypos = 768 - height;
+    }
 }
 
 void Paddle::render(SDL_Renderer *renderer)

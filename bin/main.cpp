@@ -15,8 +15,8 @@ const int SCREEN_HEIGHT = 768;
 SDL_Window *window;
 SDL_Renderer *renderer;
 
-Paddle paddle(100, 100, 100, 100);
-Ball ball(10, 500, 300);
+Paddle paddle(200, 40, 100, 50);
+Ball ball(10, 512, 384);
 
 bool running;
 
@@ -166,9 +166,6 @@ int main(int argc, char **argv)
 
     int testx = 150;
     int testy = 150;
-    std::string testFile = "../resource/yes.PNG";
-    SDL_Texture *testTexture;
-    testTexture = loadTexture(testFile);
 
     // While application is running
     while (running)
@@ -178,7 +175,6 @@ int main(int argc, char **argv)
         ball.move();
         paddle.render(renderer);
         ball.render(renderer);
-        drawTexture(testTexture, testx, testy);
         presentScene();
         SDL_Delay(16);
     }
