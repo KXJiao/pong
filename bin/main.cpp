@@ -82,11 +82,17 @@ void renderText(std::string str, int x, int y)
     SDL_Rect dst = {x, y, text->w, text->h};
     SDL_Point rot = {text->w / 2, text->h / 2};
 
+    SDL_FreeSurface(text);
+    text = NULL;
+
     SDL_SetTextureColorMod(texture, red * 255, green * 255, blue * 255);
     SDL_RenderCopyEx(renderer, texture, NULL, &dst, angle, &rot, SDL_FLIP_NONE);
+
+    // Destroy texture
+    SDL_DestroyTexture(texture);
 }
 
-void cleanup(void)
+void cleanup()
 {
     /**
      * Cleans up objects and quits
@@ -132,10 +138,16 @@ int main(int argc, char **argv)
         game->playGame();
 
         // Render
-        player->renderItems(renderer, SCREEN_HEIGHT, SCREEN_WIDTH);
+        int status = player->renderItems(renderer, SCREEN_HEIGHT, SCREEN_WIDTH);
 
         renderText(std::to_string(game->getLeftScore()), SCREEN_WIDTH / 2 - 100, 10);
         renderText(std::to_string(game->getRightScore()), SCREEN_WIDTH / 2 + 50, 10);
+
+        if (status == 0) // Represents game's end
+        {
+            renderText("Press r to restart, q or esc to quit.", 150, SCREEN_HEIGHT / 2);
+        }
+
         // Show rendered items
         SDL_RenderPresent(renderer);
 

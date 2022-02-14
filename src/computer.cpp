@@ -11,8 +11,8 @@ void Computer::controlPaddle(Ball *ball, int windowWidth)
     int currentBallY = ball->getY();
     int currentPaddleY = aiPaddle->getY();
 
-    // Check which side paddle is on, then only move when ball is close
-    if ((aiPaddle->getX() < (windowWidth / 2) && currentBallX < (windowWidth / 2) - 100) || (aiPaddle->getX() >= (windowWidth / 2) && currentBallX >= (windowWidth / 2) + 100))
+    // Check which side paddle is on, then only move when ball is halfway
+    if ((aiPaddle->getX() < (windowWidth / 2) && currentBallX < (windowWidth / 2)) || (aiPaddle->getX() >= (windowWidth / 2) && currentBallX >= (windowWidth / 2)))
     {
         if (currentPaddleY + aiPaddle->getHeight() < currentBallY)
         {

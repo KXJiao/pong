@@ -32,6 +32,7 @@ void Game::startGame(int difficulty, int playerSide)
         aiLength = 240;
     }
 
+    // Decide if player is left or right paddle
     if (player == 0)
     {
         leftPaddle = new Paddle(160, 15, 100, windowHeight / 2 - 80, windowHeight);
@@ -52,37 +53,44 @@ void Game::startGame(int difficulty, int playerSide)
 
 void Game::playGame()
 {
-    if (gameStatus == 0)
+    if (gameStatus == 0) // Game won or lost
     {
         return;
     }
-
-    ball->move(windowHeight, windowWidth);
-    if (ball->scoring == 1)
+    else // Play Game
     {
-        leftPlayerScore += 1;
-    }
-    else if (ball->scoring == 2)
-    {
-        rightPlayerScore += 1;
-    }
+        ball->move(windowHeight, windowWidth);
+        if (ball->scoring == 1)
+        {
+            leftPlayerScore += 1;
+        }
+        else if (ball->scoring == 2)
+        {
+            rightPlayerScore += 1;
+        }
 
-    // Reset ball after score
-    if (ball->scoring > 0)
-    {
-        ball->reset();
-        ball->scoring = 0;
+        // Reset ball after score
+        if (ball->scoring > 0)
+        {
+            ball->reset();
+            ball->scoring = 0;
+
+            if (leftPlayerScore >= 11 || rightPlayerScore >= 11)
+            {
+                gameStatus = 0;
+            }
+        }
+
+        ball->paddleBounce(leftPaddle);
+        ball->paddleBounce(rightPaddle);
+
+        computer->controlPaddle(ball, windowWidth);
     }
-
-    ball->paddleBounce(leftPaddle);
-    ball->paddleBounce(rightPaddle);
-
-    computer->controlPaddle(ball, windowWidth);
 }
 
 void Game::cleanGame()
 {
-    gameStatus = 0;
+    gameStatus = -1;
     player = -1;
     delete ball;
     delete computer;
