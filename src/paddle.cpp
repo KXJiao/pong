@@ -27,6 +27,11 @@ void Paddle::down()
     }
 }
 
+int Paddle::getY()
+{
+    return ypos;
+}
+
 void Paddle::render(SDL_Renderer *renderer)
 {
     boxRGBA(renderer, xpos, ypos, xpos + width, ypos + height, 0, 0, 0, 255);

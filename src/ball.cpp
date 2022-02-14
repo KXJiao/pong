@@ -8,10 +8,10 @@ Ball::Ball(int r, int x, int y)
     xpos = x;
     ypos = y;
 
-    xvel = 20;
-    yvel = 10;
+    xvel = 10;
+    yvel = 6;
 
-    maxvel = 25;
+    maxvel = 15;
 };
 
 void Ball::move()
@@ -24,8 +24,6 @@ void Ball::move()
     {
         xvel *= -1;
         yvel += rand_pert; // Perturbation
-        if (yvel > maxvel)
-            yvel -= rand_pert;
     }
 
     ypos += yvel;
@@ -35,9 +33,35 @@ void Ball::move()
         yvel *= -1;
 
         xvel += rand_pert; // Perturbation
-        if (xvel > maxvel)
-            xvel -= rand_pert;
     }
+
+    if (xvel > maxvel)
+    {
+        xvel = maxvel;
+    }
+    else if (xvel < -maxvel)
+    {
+        xvel = -maxvel;
+    }
+
+    if (yvel > maxvel)
+    {
+        yvel = maxvel;
+    }
+    else if (yvel < -maxvel)
+    {
+        yvel = -maxvel;
+    }
+}
+
+int Ball::getX()
+{
+    return xpos;
+}
+
+int Ball::getY()
+{
+    return ypos;
 }
 
 void Ball::render(SDL_Renderer *renderer)

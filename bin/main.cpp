@@ -6,6 +6,7 @@
 #include <string>
 #include "paddle.h"
 #include "ball.h"
+#include "computer.h"
 
 // Default screen dimension constants
 const int SCREEN_WIDTH = 1024;
@@ -17,6 +18,8 @@ SDL_Renderer *renderer;
 
 Paddle paddle(200, 40, 100, 50);
 Ball ball(10, 512, 384);
+
+Computer computer(200, 40);
 
 bool running;
 
@@ -173,6 +176,7 @@ int main(int argc, char **argv)
         prepareScene();
         doInput();
         ball.move();
+        computer.controlPaddle(ball, renderer);
         paddle.render(renderer);
         ball.render(renderer);
         presentScene();

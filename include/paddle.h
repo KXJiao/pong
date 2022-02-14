@@ -1,12 +1,14 @@
-#include <SDL.h>
 #ifndef _PADDLE_H_
 #define _PADDLE_H_
+#include <SDL.h>
+
 class Paddle
 {
 public:
     Paddle(int, int, int, int);
     void up();
     void down();
+    int getY();
     void render(SDL_Renderer *renderer);
 
 private:
