@@ -16,20 +16,19 @@ int Player::playerInput()
     // Handle events on queue
     while (SDL_PollEvent(&e) != 0)
     {
-
         switch (e.type)
         {
         case SDL_QUIT: // User requests quit
             currentGame->cleanGame();
             result = 0;
             break;
-        case SDL_KEYDOWN: // User presses a key
-            if (e.key.keysym.sym == SDLK_ESCAPE || e.key.keysym.sym == SDLK_q)
+        case SDL_KEYDOWN:                                                      // User presses a key
+            if (e.key.keysym.sym == SDLK_ESCAPE || e.key.keysym.sym == SDLK_q) // Quit
             {
                 currentGame->cleanGame();
                 result = 0;
             }
-            if (currentGame->getGameStatus() == 0 && e.key.keysym.sym == SDLK_r)
+            if (currentGame->getGameStatus() == 0 && e.key.keysym.sym == SDLK_r) // Only restarts while in game complete state
             {
                 currentGame->startGame(1, 0);
             }
@@ -46,7 +45,7 @@ int Player::playerInput()
         int x, y;
         SDL_GetMouseState(&x, &y);
 
-        if (currentGame->getPlayer() == 0) // Move left paddle
+        if (currentGame->getPlayer() == 0) // Move left paddle to mouse location
         {
             if (currentGame->leftPaddle->getY() + (currentGame->leftPaddle->getHeight() / 2) > y + 20)
             {
@@ -57,7 +56,7 @@ int Player::playerInput()
                 currentGame->leftPaddle->down();
             }
         }
-        else // Move right paddle
+        else // Move right paddle to mouse location
         {
             if (currentGame->rightPaddle->getY() + (currentGame->rightPaddle->getHeight() / 2) > y + 20)
             {
@@ -78,7 +77,7 @@ void Player::renderItems(SDL_Renderer *renderer, int windowHeight, int windowWid
     // Render game items only when game is playing
     if (currentGame->getGameStatus() == 1)
     {
-        lineRGBA(renderer, windowWidth / 2, 0, windowWidth / 2, windowHeight, 0, 0, 0, 128);
+        lineRGBA(renderer, windowWidth / 2, 0, windowWidth / 2, windowHeight, 0, 0, 0, 128); // Draw line across middle
         currentGame->leftPaddle->render(renderer);
         currentGame->rightPaddle->render(renderer);
         currentGame->ball->render(renderer);

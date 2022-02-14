@@ -64,8 +64,8 @@ link_libraries(SDL2::Main SDL2::Image SDL2::GFX SDL2::TTF SDL2::Mixer)
 ###############
 # C++ Options #
 ###############
-# Enable C++14
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++14")
+# Enable C++11
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
 
 # determine build type
 # 1) use build type if specified by the user.

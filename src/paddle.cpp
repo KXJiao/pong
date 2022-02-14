@@ -3,11 +3,15 @@
 
 Paddle::Paddle(int h, int w, int x, int y, int limit)
 {
+    // Paddle dimensions
     height = h;
     width = w;
+
+    // Paddle position
     xpos = x;
     ypos = y;
 
+    // Paddle lower position limit
     yLimit = limit;
 };
 
@@ -23,7 +27,7 @@ void Paddle::up()
 void Paddle::down()
 {
     ypos += 15;
-    if (ypos + height > yLimit)
+    if (ypos + height > yLimit) // Do not surpass limit
     {
         ypos = yLimit - height;
     }

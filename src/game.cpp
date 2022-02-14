@@ -11,7 +11,7 @@ Game::Game(int height, int width)
 void Game::startGame(int difficulty, int playerSide)
 {
     /**
-     * Setup game
+     * Setup game, reinitializing all variables
      **/
 
     leftPlayerScore = 0;
@@ -48,14 +48,16 @@ void Game::startGame(int difficulty, int playerSide)
 
     ball = new Ball(10, windowWidth / 2, windowHeight / 2);
 
-    gameStatus = 1;
+    gameStatus = 1; // Game running status
 }
 
 void Game::playGame()
 {
-    if (gameStatus == 1) // Play Game
+    if (gameStatus == 1) // Game running status
     {
         ball->move(windowHeight, windowWidth);
+
+        // Ball has hit left or right side
         if (ball->scoring == 1)
         {
             leftPlayerScore += 1;

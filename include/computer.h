@@ -11,8 +11,6 @@ public:
 
 private:
     Paddle *aiPaddle;
-    int aiPHeight;
-    int aiPWidth;
 };
 
 #endif /* _COMPUTER_H_ */

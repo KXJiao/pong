@@ -4,16 +4,21 @@
 
 Ball::Ball(int r, int x, int y)
 {
+    // Ball dimensions
     radius = r;
+
+    // Ball position
     xpos = x;
     ypos = y;
 
+    // Original ball position (for new rounds)
     startX = x;
     startY = y;
 
+    // If a ball has scored: 0 = no, 1 = right, 2 = left
     scoring = 0;
 
-    // Randomly move ball in a direction
+    // Randomly move ball in a direction to start
     int random = rand() % 10;
     int direction = 1;
     if (random < 5)
@@ -21,6 +26,7 @@ Ball::Ball(int r, int x, int y)
         direction = -1;
     }
 
+    // Start at 10 x velocity and -6 to 6 y velocity
     xvel = 10 * direction;
     yvel = -6 + (rand() % 12);
 
@@ -31,24 +37,25 @@ void Ball::move(int windowHeight, int windowWidth)
 {
     int rand_pert = rand() % 3; // Degree of perturbation (on wall bounce)
 
-    xpos += xvel;
+    xpos += xvel; // x movement
 
-    if (xpos > windowWidth)
+    // Ball scored
+    if (xpos > windowWidth) // Left scored
     {
         scoring = 1;
     }
-    else if (xpos < 0)
+    else if (xpos < 0) // Right scored
     {
         scoring = 2;
     }
 
-    ypos += yvel;
+    ypos += yvel; // y movement
 
     // Random perturbation
     if ((ypos < 0) || (ypos > windowHeight))
     {
         yvel *= -1;
-        // Make sure ball doesn't bounce multiple times
+        // Make sure ball doesn't bounce multiple times by adding displacement
         if (yvel < 0)
         {
             ypos -= 5;
@@ -69,7 +76,7 @@ void Ball::move(int windowHeight, int windowWidth)
         }
     }
 
-    // Limit speed of ball
+    // Limit x velocity
     if (xvel > maxvel)
     {
         xvel = maxvel;
@@ -92,6 +99,7 @@ void Ball::move(int windowHeight, int windowWidth)
         }
     }
 
+    // Limit y velocity as well
     if (yvel > maxvel)
     {
         yvel = maxvel;
@@ -114,11 +122,11 @@ int Ball::getY()
 
 int Ball::getDirection()
 {
-    if (xvel > 0)
+    if (xvel > 0) // Moving right
     {
         return 1;
     }
-    else if (xvel < 0)
+    else if (xvel < 0) // Moving left
     {
         return -1;
     }
@@ -132,7 +140,7 @@ void Ball::reset()
 {
     xvel = 0;
     yvel = 0;
-    SDL_Delay(1000);
+    SDL_Delay(1000); // 1 second pause between rounds
 
     xpos = startX;
     ypos = startY;
@@ -151,6 +159,7 @@ void Ball::reset()
 
 bool Ball::paddleBounce(Paddle *paddle)
 {
+    // Create SDL_Rects to use SDL_HasIntersection comparison
     SDL_Rect *ballBounds = new SDL_Rect;
     ballBounds->x = xpos;
     ballBounds->y = ypos;

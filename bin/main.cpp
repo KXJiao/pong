@@ -18,6 +18,7 @@ const int SCREEN_HEIGHT = 768;
 SDL_Window *window;
 SDL_Renderer *renderer;
 
+// Errors
 void csci437_error(const std::string &msg)
 {
     std::cerr << msg << " (" << SDL_GetError() << ")" << std::endl;
@@ -60,6 +61,10 @@ void initSDL(void)
 
 void renderText(std::string str, int x, int y)
 {
+    /**
+     * Renders given string on the screen at the given coordinates
+     **/
+
     // Load font
     TTF_Font *font = TTF_OpenFont("../resource/Arial.ttf", 50);
     if (font == NULL)
@@ -128,7 +133,7 @@ int main(int argc, char **argv)
         SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
         SDL_RenderClear(renderer);
 
-        // Check player input
+        // Check player input, specifically for exit input
         if (player->playerInput() == 0)
         {
             running = false;
@@ -137,7 +142,7 @@ int main(int argc, char **argv)
         // Run game
         game->playGame();
 
-        // Render
+        // Render player view and text
         player->renderItems(renderer, SCREEN_HEIGHT, SCREEN_WIDTH);
 
         renderText(std::to_string(game->getLeftScore()), SCREEN_WIDTH / 2 - 100, 10);

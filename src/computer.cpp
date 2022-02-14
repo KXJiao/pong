@@ -14,6 +14,7 @@ void Computer::controlPaddle(Ball *ball, int windowWidth)
     // Check which side paddle is on, then only move when ball is halfway
     if ((aiPaddle->getX() < (windowWidth / 2) && currentBallX < (windowWidth / 2)) || (aiPaddle->getX() >= (windowWidth / 2) && currentBallX >= (windowWidth / 2)))
     {
+        // Move up when ball's Y is above paddle's Y, and down when below
         if (currentPaddleY + aiPaddle->getHeight() < currentBallY)
         {
             aiPaddle->down();
