@@ -1,6 +1,5 @@
 // Using SDL and standard IO
 #include <SDL.h>
-#include <SDL_image.h>
 #include <iostream>
 #include <stdio.h>
 #include <string>
@@ -26,12 +25,6 @@ void csci437_error(const std::string &msg)
     exit(0);
 }
 
-void csci437_img_error(const std::string &msg)
-{
-    std::cerr << msg << " (" << IMG_GetError() << ")" << std::endl;
-    exit(0);
-}
-
 void initSDL(void)
 {
     /**
@@ -47,10 +40,6 @@ void initSDL(void)
     if (window == NULL)
         csci437_error("Window could not be created!");
 
-    // Init Bitmap loading
-    if (IMG_Init(IMG_INIT_JPG | IMG_INIT_PNG) < 0)
-        csci437_img_error("SDL could not initialize bitmap loaders!");
-
     // Small delay to allow the system to create the window.
     SDL_Delay(100);
 
@@ -58,23 +47,6 @@ void initSDL(void)
     renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
     if (renderer == NULL)
         csci437_error("Unable to create renderer!");
-}
-
-void prepareScene(void)
-{
-    /***
-     * Sets up renderer
-     **/
-    SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
-    SDL_RenderClear(renderer);
-}
-
-void presentScene(void)
-{
-    /***
-     * Displays items on screen
-     **/
-    SDL_RenderPresent(renderer);
 }
 
 void cleanup(void)
@@ -109,14 +81,25 @@ int main(int argc, char **argv)
     // While application is running
     while (running)
     {
-        prepareScene();
+        // Prepare rendering
+        SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
+        SDL_RenderClear(renderer);
+
+        // Check player input
         if (player->playerInput() == 0)
         {
             running = false;
         }
+
+        // Run game
         game->playGame();
+
+        // Render
         player->renderItems(renderer);
-        presentScene();
+
+        // Show rendered items
+        SDL_RenderPresent(renderer);
+
         SDL_Delay(16);
     }
 

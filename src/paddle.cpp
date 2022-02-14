@@ -37,6 +37,11 @@ int Paddle::getWidth()
     return width;
 }
 
+int Paddle::getX()
+{
+    return xpos;
+}
+
 int Paddle::getY()
 {
     return ypos;

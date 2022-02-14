@@ -10,6 +10,7 @@ public:
     void down();
     int getHeight();
     int getWidth();
+    int getX();
     int getY();
     void render(SDL_Renderer *renderer);
 

@@ -28,7 +28,7 @@ private:
     int gameStatus;
     int leftPlayerScore;
     int rightPlayerScore;
-    int player; // 0 left, 1 right
+    int player; // which paddle player is controlling: 0 left, 1 right
 };
 
 #endif /* _GAME_H_ */
