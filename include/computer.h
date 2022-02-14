@@ -7,7 +7,7 @@ class Computer
 {
 public:
     Computer(Paddle *paddle);
-    void controlPaddle(Ball *ball);
+    void controlPaddle(Ball *ball, int);
 
 private:
     Paddle *aiPaddle;

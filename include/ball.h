@@ -11,14 +11,19 @@ public:
     void move(int, int);
     int getX();
     int getY();
-    void render(SDL_Renderer *renderer);
+    int getDirection(); // left -1, right 1
+    void reset();
     bool paddleBounce(Paddle *paddle);
+    void render(SDL_Renderer *renderer);
 
 private:
     int radius;
 
     int xpos;
     int ypos;
+
+    int startX;
+    int startY;
 
     int xvel;
     int yvel;

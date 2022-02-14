@@ -1,5 +1,6 @@
 // Using SDL and standard IO
 #include <SDL.h>
+#include <SDL_ttf.h>
 #include <iostream>
 #include <stdio.h>
 #include <string>
@@ -17,11 +18,15 @@ const int SCREEN_HEIGHT = 768;
 SDL_Window *window;
 SDL_Renderer *renderer;
 
-bool running;
-
 void csci437_error(const std::string &msg)
 {
     std::cerr << msg << " (" << SDL_GetError() << ")" << std::endl;
+    exit(0);
+}
+
+void csci437_ttf_error(const std::string &msg)
+{
+    std::cerr << msg << " (" << TTF_GetError() << ")" << std::endl;
     exit(0);
 }
 
@@ -40,6 +45,10 @@ void initSDL(void)
     if (window == NULL)
         csci437_error("Window could not be created!");
 
+    // init TTF
+    if (TTF_Init() < 0)
+        csci437_ttf_error("Unable to initialize TTF!");
+
     // Small delay to allow the system to create the window.
     SDL_Delay(100);
 
@@ -47,6 +56,34 @@ void initSDL(void)
     renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
     if (renderer == NULL)
         csci437_error("Unable to create renderer!");
+}
+
+void renderText(std::string str, int x, int y)
+{
+    // Load font
+    TTF_Font *font = TTF_OpenFont("../resource/Arial.ttf", 50);
+    if (font == NULL)
+        csci437_error("Unable to open font!");
+
+    // render text
+    SDL_Color color = {0, 0, 0};
+    SDL_Surface *text = TTF_RenderText_Solid(font, str.c_str(), color);
+    if (text == NULL)
+        csci437_ttf_error("Unable to render text!");
+
+    // convert to texture
+    SDL_Texture *texture = SDL_CreateTextureFromSurface(renderer, text);
+    if (texture == NULL)
+        csci437_error("Could not create texture from surface!");
+
+    bool red = true, green = true, blue = true;
+    float angle = 0;
+
+    SDL_Rect dst = {x, y, text->w, text->h};
+    SDL_Point rot = {text->w / 2, text->h / 2};
+
+    SDL_SetTextureColorMod(texture, red * 255, green * 255, blue * 255);
+    SDL_RenderCopyEx(renderer, texture, NULL, &dst, angle, &rot, SDL_FLIP_NONE);
 }
 
 void cleanup(void)
@@ -75,7 +112,7 @@ int main(int argc, char **argv)
     Player *player = new Player(game);
 
     /*** Main Loop ***/
-    running = true;
+    bool running = true;
     game->startGame(1, 0);
 
     // While application is running
@@ -95,8 +132,10 @@ int main(int argc, char **argv)
         game->playGame();
 
         // Render
-        player->renderItems(renderer);
+        player->renderItems(renderer, SCREEN_HEIGHT, SCREEN_WIDTH);
 
+        renderText(std::to_string(game->getLeftScore()), SCREEN_WIDTH / 2 - 100, 10);
+        renderText(std::to_string(game->getRightScore()), SCREEN_WIDTH / 2 + 50, 10);
         // Show rendered items
         SDL_RenderPresent(renderer);
 

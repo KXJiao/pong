@@ -1,17 +1,19 @@
 #include "paddle.h"
 #include <SDL2_gfxPrimitives.h>
 
-Paddle::Paddle(int h, int w, int x, int y)
+Paddle::Paddle(int h, int w, int x, int y, int limit)
 {
     height = h;
     width = w;
     xpos = x;
     ypos = y;
+
+    yLimit = limit;
 };
 
 void Paddle::up()
 {
-    ypos -= 30;
+    ypos -= 15;
     if (ypos < 0)
     {
         ypos = 0;
@@ -20,10 +22,10 @@ void Paddle::up()
 
 void Paddle::down()
 {
-    ypos += 30;
-    if (ypos + height > 768) // remove hardcode
+    ypos += 15;
+    if (ypos + height > yLimit)
     {
-        ypos = 768 - height;
+        ypos = yLimit - height;
     }
 }
 

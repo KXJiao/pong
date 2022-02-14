@@ -34,18 +34,18 @@ void Game::startGame(int difficulty, int playerSide)
 
     if (player == 0)
     {
-        leftPaddle = new Paddle(160, 15, 100, windowHeight / 2 - 80);
-        rightPaddle = new Paddle(aiLength, 15, windowWidth - 115, (windowHeight / 2) - (aiLength / 2));
+        leftPaddle = new Paddle(160, 15, 100, windowHeight / 2 - 80, windowHeight);
+        rightPaddle = new Paddle(aiLength, 15, windowWidth - 115, (windowHeight / 2) - (aiLength / 2), windowHeight);
         computer = new Computer(rightPaddle);
     }
     else if (player == 1)
     {
-        leftPaddle = new Paddle(aiLength, 15, 100, (windowHeight / 2) - (aiLength / 2));
-        rightPaddle = new Paddle(160, 15, windowWidth - 115, windowHeight / 2 - 80);
+        leftPaddle = new Paddle(aiLength, 15, 100, (windowHeight / 2) - (aiLength / 2), windowHeight);
+        rightPaddle = new Paddle(160, 15, windowWidth - 115, windowHeight / 2 - 80, windowHeight);
         computer = new Computer(leftPaddle);
     }
 
-    ball = new Ball(10, windowHeight / 2, windowWidth / 2);
+    ball = new Ball(10, windowWidth / 2, windowHeight / 2);
 
     gameStatus = 1;
 }
@@ -58,10 +58,26 @@ void Game::playGame()
     }
 
     ball->move(windowHeight, windowWidth);
+    if (ball->scoring == 1)
+    {
+        leftPlayerScore += 1;
+    }
+    else if (ball->scoring == 2)
+    {
+        rightPlayerScore += 1;
+    }
+
+    // Reset ball after score
+    if (ball->scoring > 0)
+    {
+        ball->reset();
+        ball->scoring = 0;
+    }
+
     ball->paddleBounce(leftPaddle);
     ball->paddleBounce(rightPaddle);
 
-    computer->controlPaddle(ball);
+    computer->controlPaddle(ball, windowWidth);
 }
 
 void Game::cleanGame()

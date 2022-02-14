@@ -5,7 +5,7 @@
 class Paddle
 {
 public:
-    Paddle(int, int, int, int);
+    Paddle(int, int, int, int, int);
     void up();
     void down();
     int getHeight();
@@ -20,6 +20,8 @@ private:
 
     int xpos;
     int ypos;
+
+    int yLimit;
 };
 
 #endif /* _PADDLE_H_ */
