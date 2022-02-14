@@ -21,14 +21,12 @@ int Player::playerInput()
         {
         case SDL_QUIT: // User requests quit
             currentGame->cleanGame();
-            delete currentGame;
             result = 0;
             break;
         case SDL_KEYDOWN: // User presses a key
             if (e.key.keysym.sym == SDLK_ESCAPE || e.key.keysym.sym == SDLK_q)
             {
                 currentGame->cleanGame();
-                delete currentGame;
                 result = 0;
             }
             if (currentGame->getGameStatus() == 0 && e.key.keysym.sym == SDLK_r)
@@ -75,9 +73,8 @@ int Player::playerInput()
     return result; // return 0 when quitting
 }
 
-int Player::renderItems(SDL_Renderer *renderer, int windowHeight, int windowWidth)
+void Player::renderItems(SDL_Renderer *renderer, int windowHeight, int windowWidth)
 {
-
     // Render game items only when game is playing
     if (currentGame->getGameStatus() == 1)
     {
@@ -85,11 +82,5 @@ int Player::renderItems(SDL_Renderer *renderer, int windowHeight, int windowWidt
         currentGame->leftPaddle->render(renderer);
         currentGame->rightPaddle->render(renderer);
         currentGame->ball->render(renderer);
-        return 1;
     }
-    else if (currentGame->getGameStatus() == 0) // Show end screen
-    {
-        return 0;
-    }
-    return -1;
 }

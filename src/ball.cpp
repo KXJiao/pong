@@ -24,7 +24,7 @@ Ball::Ball(int r, int x, int y)
     xvel = 10 * direction;
     yvel = -6 + (rand() % 12);
 
-    maxvel = 15;
+    maxvel = 20;
 };
 
 void Ball::move(int windowHeight, int windowWidth)
@@ -171,10 +171,12 @@ bool Ball::paddleBounce(Paddle *paddle)
         if (getDirection() == -1)
         {
             xpos -= 5;
+            xvel -= 1; // Speed up horizontal speed slightly
         }
         else
         {
             xpos += 5;
+            xvel += 1;
         }
 
         int rand_pert = -3 + (rand() % 6); // Degree of perturbation (on paddle bounce)

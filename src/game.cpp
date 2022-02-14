@@ -53,11 +53,7 @@ void Game::startGame(int difficulty, int playerSide)
 
 void Game::playGame()
 {
-    if (gameStatus == 0) // Game won or lost
-    {
-        return;
-    }
-    else // Play Game
+    if (gameStatus == 1) // Play Game
     {
         ball->move(windowHeight, windowWidth);
         if (ball->scoring == 1)
@@ -77,7 +73,7 @@ void Game::playGame()
 
             if (leftPlayerScore >= 11 || rightPlayerScore >= 11)
             {
-                gameStatus = 0;
+                gameStatus = 0; // Stop the game on victory
             }
         }
 

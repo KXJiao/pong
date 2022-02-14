@@ -138,13 +138,22 @@ int main(int argc, char **argv)
         game->playGame();
 
         // Render
-        int status = player->renderItems(renderer, SCREEN_HEIGHT, SCREEN_WIDTH);
+        player->renderItems(renderer, SCREEN_HEIGHT, SCREEN_WIDTH);
 
         renderText(std::to_string(game->getLeftScore()), SCREEN_WIDTH / 2 - 100, 10);
         renderText(std::to_string(game->getRightScore()), SCREEN_WIDTH / 2 + 50, 10);
 
-        if (status == 0) // Represents game's end
+        if (game->getGameStatus() == 0) // Represents game's end
         {
+            if (game->getLeftScore() >= 11)
+            {
+                renderText("Left Player Wins!", 150, SCREEN_HEIGHT / 2 - 100);
+            }
+            else if (game->getRightScore() >= 11)
+            {
+                renderText("Right Player Wins!", 150, SCREEN_HEIGHT / 2 - 100);
+            }
+
             renderText("Press r to restart, q or esc to quit.", 150, SCREEN_HEIGHT / 2);
         }
 
@@ -155,6 +164,8 @@ int main(int argc, char **argv)
     }
 
     /*** Clean Up ***/
+    delete player;
+    delete game;
     cleanup();
 
     // Done.

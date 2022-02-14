@@ -9,7 +9,7 @@ class Player
 public:
     Player(Game *game);
     int playerInput();
-    int renderItems(SDL_Renderer *renderer, int, int);
+    void renderItems(SDL_Renderer *renderer, int, int);
 
 private:
     Game *currentGame;
