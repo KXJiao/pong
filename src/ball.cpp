@@ -35,6 +35,7 @@ void Ball::move()
         xvel += rand_pert; // Perturbation
     }
 
+    // Limit speed of ball
     if (xvel > maxvel)
     {
         xvel = maxvel;

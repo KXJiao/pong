@@ -7,6 +7,8 @@
 #include "paddle.h"
 #include "ball.h"
 #include "computer.h"
+#include "game.h"
+#include "player.h"
 
 // Default screen dimension constants
 const int SCREEN_WIDTH = 1024;
@@ -15,11 +17,6 @@ const int SCREEN_HEIGHT = 768;
 // Vars for game
 SDL_Window *window;
 SDL_Renderer *renderer;
-
-Paddle paddle(200, 40, 100, 50);
-Ball ball(10, 512, 384);
-
-Computer computer(200, 40);
 
 bool running;
 
@@ -63,67 +60,6 @@ void initSDL(void)
         csci437_error("Unable to create renderer!");
 }
 
-void doInput(void)
-{
-    /**
-     * Handle user input
-     **/
-
-    SDL_Event e;
-    // Handle events on queue
-    while (SDL_PollEvent(&e) != 0)
-    {
-        switch (e.type)
-        {
-        case SDL_QUIT: // User requests quit
-            running = false;
-            break;
-        case SDL_KEYDOWN: // User presses a key
-            if (e.key.keysym.sym == SDLK_q)
-                running = false;
-            else if (e.key.keysym.sym == SDLK_w)
-            {
-                paddle.up();
-            }
-            else if (e.key.keysym.sym == SDLK_s)
-            {
-                paddle.down();
-            }
-
-            break;
-        default:
-            break;
-        }
-    }
-}
-
-SDL_Texture *loadTexture(std::string filename)
-{
-    /**
-     * Loads image from file as texture
-     **/
-
-    SDL_Texture *texture;
-    texture = IMG_LoadTexture(renderer, filename.c_str());
-
-    return texture;
-}
-
-void drawTexture(SDL_Texture *texture, int x, int y)
-{
-    /**
-     * Draws a texture at the given coordinates
-     **/
-
-    SDL_Rect dest;
-
-    dest.x = x;
-    dest.y = y;
-    SDL_QueryTexture(texture, NULL, NULL, &dest.w, &dest.h);
-
-    SDL_RenderCopy(renderer, texture, NULL, &dest);
-}
-
 void prepareScene(void)
 {
     /***
@@ -163,22 +99,23 @@ int main(int argc, char **argv)
 {
     /*** Initialization ***/
     initSDL();
+    Game *game = new Game(SCREEN_HEIGHT, SCREEN_WIDTH);
+    Player *player = new Player(game);
 
     /*** Main Loop ***/
     running = true;
-
-    int testx = 150;
-    int testy = 150;
+    game->startGame(1, 0);
 
     // While application is running
     while (running)
     {
         prepareScene();
-        doInput();
-        ball.move();
-        computer.controlPaddle(ball, renderer);
-        paddle.render(renderer);
-        ball.render(renderer);
+        if (player->playerInput() == 0)
+        {
+            running = false;
+        }
+        game->playGame();
+        player->renderItems(renderer);
         presentScene();
         SDL_Delay(16);
     }

@@ -21,10 +21,20 @@ void Paddle::up()
 void Paddle::down()
 {
     ypos += 30;
-    if (ypos + height > 768)
+    if (ypos + height > 768) // remove hardcode
     {
         ypos = 768 - height;
     }
+}
+
+int Paddle::getHeight()
+{
+    return height;
+}
+
+int Paddle::getWidth()
+{
+    return width;
 }
 
 int Paddle::getY()

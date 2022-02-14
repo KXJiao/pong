@@ -2,13 +2,15 @@
 #define _COMPUTER_H_
 #include "ball.h"
 #include "paddle.h"
+#include <memory>
 class Computer
 {
 public:
-    Computer(int, int);
-    void controlPaddle(Ball ball, SDL_Renderer *renderer);
+    Computer(Paddle *paddle);
+    void controlPaddle(Ball *ball);
 
 private:
+    Paddle *aiPaddle;
     int aiPHeight;
     int aiPWidth;
 };

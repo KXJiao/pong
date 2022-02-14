@@ -8,6 +8,8 @@ public:
     Paddle(int, int, int, int);
     void up();
     void down();
+    int getHeight();
+    int getWidth();
     int getY();
     void render(SDL_Renderer *renderer);
 

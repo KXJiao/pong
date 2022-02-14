@@ -1,28 +1,21 @@
-#include <memory>
 #include "computer.h"
 
-std::unique_ptr<Paddle> paddleAI;
-
-Computer::Computer(int height, int width)
+Computer::Computer(Paddle *paddle)
 {
-    aiPHeight = height;
-    aiPWidth = width;
-
-    paddleAI = std::make_unique<Paddle>(aiPHeight, aiPWidth, 900, 500); // change hard code to proper later
+    aiPaddle = paddle;
 };
 
-void Computer::controlPaddle(Ball ball, SDL_Renderer *renderer)
+void Computer::controlPaddle(Ball *ball)
 {
-    int currentBallY = ball.getY();
-    int currentPaddleY = paddleAI->getY();
+    int currentBallY = ball->getY();
+    int currentPaddleY = aiPaddle->getY();
 
-    if (currentPaddleY + aiPHeight < currentBallY)
+    if (currentPaddleY + aiPaddle->getHeight() < currentBallY)
     {
-        paddleAI->down();
+        aiPaddle->down();
     }
     else if (currentPaddleY > currentBallY)
     {
-        paddleAI->up();
+        aiPaddle->up();
     }
-    paddleAI->render(renderer);
 }
